@@ -1,16 +1,31 @@
 const storedData = JSON.parse(localStorage.getItem('addedProducts'))
-console.log(storedData);
-
 const div = document.querySelector('#div');
+const totalPrice = document.querySelector('#totalPrice');
+
+if (storedData) {
+  renderData();
+}
+
+var totalprice = 0;
+
 function renderData() {
     div.innerHTML = '';
     storedData.map((item,index)=>{
+      if (!item.quantity) {
+        item.quantity = 1;
+      }
+      const itemPrice = Number(item.price);
+      console.log(itemPrice);
+      totalprice = itemPrice*item.quantity;
+      console.log(totalprice);
+      
+      // totalPrice.innerHTML = `${(itemPrice)*(item.quantity)}`
         div.innerHTML += `
         <div class="card" style="width: 12rem;">
             <div class="card-body">
               <h5 class="card-title">${item.title}</h5>
               <h6 class="card-subtitle mb-2 text-body-secondary">${item.price}</h6>
-              <h6 class="card-subtitle mb-2 text-body-secondary"><button>+</button> <span>1</span> <button>-</button></h6>
+              <h6 class="card-subtitle mb-2 text-body-secondary"><button onclick="increaseQuantity(${index})">+</button> <span>${item.quantity}</span> <button onclick="decreaseQuantity(${index})">-</button></h6>
               <p class="card-text">${item.description}</p>
               <a href="#" class="card-link">Add to Cart</a>
             </div>
@@ -19,14 +34,21 @@ function renderData() {
     })
 }
 
-console.log(10%3);
-console.log(5 * "3");
-console.log(typeof(null));
-console.log(3 == "3");
-console.log(typeof NaN);
-console.log(Math.max(10, 20, 30));
-console.log("JavaScript".charAt(3));
-console.log(Math.floor(5.8));
-console.log();
-Boolean(10 > 9);
-console.log(Boolean(10 > 9));
+
+function increaseQuantity(item) {
+  if (storedData[item].quantity) {
+    storedData[item].quantity += 1;
+  }else{
+    storedData[item].quantity = 1;
+  }
+  renderData();
+}
+
+function decreaseQuantity(item) {
+  if (storedData[item].quantity > 0) {
+    storedData[item].quantity -= 1;
+  }else{
+    storedData[item].quantity = 0;
+  }
+  renderData();
+}

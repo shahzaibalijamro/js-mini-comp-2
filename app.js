@@ -38,3 +38,7 @@ function addToCart(index) {
     addedProducts.push(arr[index])
     localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
 }
+
+function goToCart() {
+    window.location = 'checkout.html';
+}
